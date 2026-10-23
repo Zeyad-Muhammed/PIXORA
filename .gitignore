@@ -1,0 +1,41 @@
+# Build output
+bin/
+obj/
+artifacts/
+dist/
+publish/
+TestResults/
+*.trx
+
+# IDE / user files
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.rsuser
+
+# Secrets, signing material, machine-specific config
+*.pfx
+*.p12
+*.snk
+*.pem
+*.key
+*.cer
+keystore.properties
+*.env
+appsettings.*.local.json
+
+# Local data and captures (never commit user media or databases)
+*.db
+*.db-shm
+*.db-wal
+*.mp4
+*.mkv
+*.wmv
+captures/
+recordings/
+logs/
+
+# NSIS
+*.nsis.log

@@ -1,0 +1,25 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PIXORA.App/PIXORA.App.csproj" />
+    <Project Path="src/PIXORA.Capture/PIXORA.Capture.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="src/PIXORA.Core/PIXORA.Core.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="src/PIXORA.Editor/PIXORA.Editor.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="src/PIXORA.Library/PIXORA.Library.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="src/PIXORA.Recording/PIXORA.Recording.csproj">
+      <Platform Project="x64" />
+    </Project>
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PIXORA.Tests/PIXORA.Tests.csproj">
+      <Platform Project="x64" />
+    </Project>
+  </Folder>
+</Solution>

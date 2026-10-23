@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <RootNamespace>PIXORA.Tests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="4.0.1" />
+    <ProjectReference Include="..\..\src\PIXORA.Core\PIXORA.Core.csproj" />
+    <ProjectReference Include="..\..\src\PIXORA.Editor\PIXORA.Editor.csproj" />
+    <ProjectReference Include="..\..\src\PIXORA.Library\PIXORA.Library.csproj" />
+    <ProjectReference Include="..\..\src\PIXORA.Capture\PIXORA.Capture.csproj" />
+    <ProjectReference Include="..\..\src\PIXORA.Recording\PIXORA.Recording.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>
+

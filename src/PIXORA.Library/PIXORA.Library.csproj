@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>PIXORA.Library</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.13" />
+    <PackageReference Include="SkiaSharp" Version="4.153.1" />
+    <ProjectReference Include="..\PIXORA.Core\PIXORA.Core.csproj" />
+  </ItemGroup>
+</Project>

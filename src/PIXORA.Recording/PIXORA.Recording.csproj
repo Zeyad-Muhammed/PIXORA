@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <RootNamespace>PIXORA.Recording</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="3.3.0" />
+    <ProjectReference Include="..\PIXORA.Core\PIXORA.Core.csproj" />
+    <ProjectReference Include="..\PIXORA.Capture\PIXORA.Capture.csproj" />
+    <ProjectReference Include="..\PIXORA.Library\PIXORA.Library.csproj" />
+  </ItemGroup>
+</Project>
