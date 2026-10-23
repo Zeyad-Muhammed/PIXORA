@@ -1,0 +1,186 @@
+<Page
+    x:Class="PIXORA.App.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource PxBg0}">
+
+    <Page.Resources>
+        <Style x:Key="SettingRow" TargetType="Grid">
+            <Setter Property="ColumnSpacing" Value="16" />
+            <Setter Property="MinHeight" Value="44" />
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+        <ScrollViewer>
+            <StackPanel Padding="28,22,28,28" Spacing="18" MaxWidth="980" HorizontalAlignment="Stretch">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Settings" Style="{StaticResource PxHeadlineLg}" />
+                    <TextBlock Text="Changes are checked before they are saved. Settings are stored per user in %APPDATA%\PIXORA." Style="{StaticResource PxBodySecondary}" />
+                </StackPanel>
+
+                <InfoBar x:Name="ErrorBar" Severity="Error" Title="Please fix the following" IsClosable="True" />
+
+                <!-- General -->
+                <Border Style="{StaticResource PxPanel}">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="General" Style="{StaticResource PxSectionHeader}" />
+                        <ToggleSwitch x:Name="StartupSwitch" Header="Start PIXORA when I sign in to Windows (starts in the tray)" />
+                        <ToggleSwitch x:Name="TraySwitch" Header="Show the PIXORA icon in the notification area (tray)" Toggled="Tray_Toggled" />
+                        <ToggleSwitch x:Name="MinimizeSwitch" Header="Closing the window keeps PIXORA running in the tray" />
+                        <ToggleSwitch x:Name="NotifySwitch" Header="Show capture and recording notifications" />
+                        <ComboBox x:Name="ThemeBox" Header="Theme" Width="240">
+                            <ComboBoxItem Content="Dark" Tag="Dark" />
+                            <ComboBoxItem Content="Light" Tag="Light" />
+                            <ComboBoxItem Content="Use Windows setting" Tag="System" />
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <!-- Storage -->
+                <Border Style="{StaticResource PxPanel}">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="Save locations and file names" Style="{StaticResource PxSectionHeader}" />
+                        <Grid Style="{StaticResource SettingRow}">
+                            <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                            <TextBox x:Name="ShotDirBox" Header="Screenshot folder" />
+                            <Button Grid.Column="1" Content="Browse…" Style="{StaticResource PxSecondaryButton}" VerticalAlignment="Bottom" Tag="Shot" Click="Browse_Click" />
+                        </Grid>
+                        <Grid Style="{StaticResource SettingRow}">
+                            <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                            <TextBox x:Name="RecDirBox" Header="Recording folder" />
+                            <Button Grid.Column="1" Content="Browse…" Style="{StaticResource PxSecondaryButton}" VerticalAlignment="Bottom" Tag="Rec" Click="Browse_Click" />
+                        </Grid>
+                        <Grid ColumnSpacing="16">
+                            <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
+                            <StackPanel Spacing="4">
+                                <TextBox x:Name="ShotNameBox" Header="Screenshot name template" TextChanged="Template_Changed" />
+                                <TextBlock x:Name="ShotNamePreview" Style="{StaticResource PxCaption}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Spacing="4">
+                                <TextBox x:Name="RecNameBox" Header="Recording name template" TextChanged="Template_Changed" />
+                                <TextBlock x:Name="RecNamePreview" Style="{StaticResource PxCaption}" />
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock Style="{StaticResource PxCaption}" TextWrapping="Wrap" TextTrimming="None"
+                                   Text="Tokens: {date} = 2026-10-23, {time} = 14-05-09, {counter} = 1. Existing files are never overwritten; a number is added instead." />
+                    </StackPanel>
+                </Border>
+
+                <!-- Screenshots -->
+                <Border Style="{StaticResource PxPanel}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Screenshots" Style="{StaticResource PxSectionHeader}" />
+                        <Grid ColumnSpacing="16">
+                            <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
+                            <ComboBox x:Name="FormatBox" Header="Format" HorizontalAlignment="Stretch">
+                                <ComboBoxItem Content="PNG (lossless)" Tag="Png" /><ComboBoxItem Content="JPEG" Tag="Jpeg" /><ComboBoxItem Content="WebP" Tag="WebP" />
+                            </ComboBox>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock x:Name="QualityLabel" Text="JPEG/WebP quality" Margin="0,0,0,4" />
+                                <Slider x:Name="QualitySlider" Minimum="1" Maximum="100" StepFrequency="1" />
+                            </StackPanel>
+                            <NumberBox x:Name="DelayBox" Grid.Column="2" Header="Default delay (seconds)" Minimum="0" Maximum="30" SpinButtonPlacementMode="Inline" />
+                        </Grid>
+                        <ToggleSwitch x:Name="AutoSaveSwitch" Header="Save screenshots automatically" />
+                        <ToggleSwitch x:Name="ClipSwitch" Header="Copy screenshots to the clipboard" />
+                        <ToggleSwitch x:Name="EditorSwitch" Header="Open screenshots in the editor" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Recording -->
+                <Border Style="{StaticResource PxPanel}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Recording" Style="{StaticResource PxSectionHeader}" />
+                        <Grid ColumnSpacing="16" RowSpacing="12">
+                            <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
+                            <ComboBox x:Name="FpsBox" Header="Frame rate" HorizontalAlignment="Stretch">
+                                <ComboBoxItem Content="15 FPS" Tag="15" /><ComboBoxItem Content="24 FPS" Tag="24" /><ComboBoxItem Content="30 FPS" Tag="30" /><ComboBoxItem Content="60 FPS" Tag="60" />
+                            </ComboBox>
+                            <ComboBox x:Name="ResBox" Grid.Column="1" Header="Resolution" HorizontalAlignment="Stretch">
+                                <ComboBoxItem Content="Native" Tag="0" /><ComboBoxItem Content="Up to 2160p" Tag="2160" /><ComboBoxItem Content="Up to 1440p" Tag="1440" />
+                                <ComboBoxItem Content="Up to 1080p" Tag="1080" /><ComboBoxItem Content="Up to 720p" Tag="720" /><ComboBoxItem Content="Up to 480p" Tag="480" />
+                            </ComboBox>
+                            <ComboBox x:Name="QualityBox" Grid.Column="2" Header="Quality" HorizontalAlignment="Stretch">
+                                <ComboBoxItem Content="Small file" Tag="Low" /><ComboBoxItem Content="Balanced" Tag="Medium" /><ComboBoxItem Content="High" Tag="High" />
+                            </ComboBox>
+                            <NumberBox x:Name="CountdownBox" Grid.Row="1" Header="Countdown (seconds)" Minimum="0" Maximum="10" SpinButtonPlacementMode="Inline" />
+                        </Grid>
+                        <ToggleSwitch x:Name="CursorSwitch" Header="Show the mouse cursor in recordings" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Audio -->
+                <Border Style="{StaticResource PxPanel}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Audio sources" Style="{StaticResource PxSectionHeader}" />
+                        <ToggleSwitch x:Name="SysAudioSwitch" Header="Record system audio (what plays through your speakers)" />
+                        <StackPanel>
+                            <TextBlock x:Name="SysVolLabel" Text="System audio volume" />
+                            <Slider x:Name="SysVolSlider" Minimum="0" Maximum="200" StepFrequency="5" ValueChanged="Vol_Changed" />
+                        </StackPanel>
+                        <ToggleSwitch x:Name="MicSwitch" Header="Record microphone" />
+                        <ComboBox x:Name="MicBox" Header="Microphone" DisplayMemberPath="Name" Width="420" PlaceholderText="No microphone found" />
+                        <StackPanel>
+                            <TextBlock x:Name="MicVolLabel" Text="Microphone volume" />
+                            <Slider x:Name="MicVolSlider" Minimum="0" Maximum="200" StepFrequency="5" ValueChanged="Vol_Changed" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Shortcuts -->
+                <Border Style="{StaticResource PxPanel}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Keyboard shortcuts (global)" Style="{StaticResource PxSectionHeader}" />
+                        <TextBlock Style="{StaticResource PxCaption}" TextWrapping="Wrap" TextTrimming="None"
+                                   Text="Click a box and press the key combination (at least one of Ctrl, Alt, Shift or Win plus a key). Press Backspace to clear. Shortcuts already taken by another app are reported on the Home page." />
+                        <Grid ColumnSpacing="16" RowSpacing="12">
+                            <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions><RowDefinition /><RowDefinition /><RowDefinition /></Grid.RowDefinitions>
+                            <TextBox x:Name="HkRegion" Header="Capture region" IsReadOnly="True" PreviewKeyDown="Hotkey_KeyDown" />
+                            <TextBox x:Name="HkWindow" Grid.Column="1" Header="Capture window" IsReadOnly="True" PreviewKeyDown="Hotkey_KeyDown" />
+                            <TextBox x:Name="HkFull" Grid.Row="1" Header="Capture full screen" IsReadOnly="True" PreviewKeyDown="Hotkey_KeyDown" />
+                            <TextBox x:Name="HkRecord" Grid.Row="1" Grid.Column="1" Header="Start / stop recording" IsReadOnly="True" PreviewKeyDown="Hotkey_KeyDown" />
+                            <TextBox x:Name="HkEditor" Grid.Row="2" Header="Open editor" IsReadOnly="True" PreviewKeyDown="Hotkey_KeyDown" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- About -->
+                <Border Style="{StaticResource PxPanel}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="About" Style="{StaticResource PxSectionHeader}" />
+                        <StackPanel Orientation="Horizontal" Spacing="14">
+                            <Image Source="ms-appx:///Assets/pixora-256.png" Width="52" Height="52" />
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="PIXORA Capture Studio" Style="{StaticResource PxHeadlineSm}" />
+                                <TextBlock x:Name="VersionText" Style="{StaticResource PxCaption}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource PxBodySecondary}" FontSize="13"
+                                   Text="Updates are delivered through NOVU Launcher (NOVU Store → PIXORA → Reinstall). PIXORA does not check the internet on its own." />
+                        <TextBlock Style="{StaticResource PxBodySecondary}" FontSize="13"
+                                   Text="Privacy: captures and recordings never leave this PC. PIXORA has no telemetry and no cloud upload." />
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Style="{StaticResource PxSecondaryButton}" Content="Open data folder" Click="OpenData_Click" />
+                            <Button Style="{StaticResource PxSecondaryButton}" Content="Open logs" Click="OpenLogs_Click" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Save bar -->
+        <Border Grid.Row="1" Background="{ThemeResource PxBg1}" BorderBrush="{ThemeResource PxBorder}" BorderThickness="0,1,0,0" Padding="28,12">
+            <Grid>
+                <TextBlock x:Name="SaveStatus" Style="{StaticResource PxCaption}" VerticalAlignment="Center" />
+                <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource PxGhostButton}" Content="Restore defaults" Click="Defaults_Click" />
+                    <Button Style="{StaticResource PxSecondaryButton}" Content="Discard changes" Click="Discard_Click" />
+                    <Button Style="{StaticResource PxPrimaryButton}" Content="Save settings" Click="Save_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

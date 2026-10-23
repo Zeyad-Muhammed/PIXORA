@@ -1,0 +1,77 @@
+<Page
+    x:Class="PIXORA.App.Pages.PreviewPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource PxBg0}">
+
+    <Grid Padding="24,18,24,24" ColumnSpacing="20" RowSpacing="14">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="320" /></Grid.ColumnDefinitions>
+        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+
+        <Grid Grid.ColumnSpan="2">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <Button Style="{StaticResource PxGhostButton}" Click="Back_Click" ToolTipService.ToolTip="Back to library" AutomationProperties.Name="Back"><FontIcon Glyph="&#xE72B;" FontSize="14" /></Button>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock x:Name="Title" Style="{StaticResource PxHeadlineMd}" TextTrimming="CharacterEllipsis" MaxWidth="720" />
+                    <TextBlock x:Name="Subtitle" Style="{StaticResource PxCaption}" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="1" CornerRadius="12" BorderBrush="{ThemeResource PxBorder}" BorderThickness="1" Background="Black">
+            <Grid>
+                <MediaPlayerElement x:Name="Player" AreTransportControlsEnabled="True" Stretch="Uniform" AutoPlay="False" />
+                <StackPanel x:Name="MissingState" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8" Visibility="Collapsed">
+                    <FontIcon Glyph="&#xE783;" FontSize="28" Foreground="{StaticResource PxError}" />
+                    <TextBlock Text="The recording file is missing" Foreground="#E5EEF0" HorizontalAlignment="Center" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1">
+            <StackPanel Spacing="14">
+                <Border Style="{StaticResource PxPanel}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="DETAILS" Style="{StaticResource PxLabelCaps}" />
+                        <Grid RowSpacing="8" ColumnSpacing="10">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="90" /><ColumnDefinition /></Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions><RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition /></Grid.RowDefinitions>
+                            <TextBlock Text="Duration" Style="{StaticResource PxCaption}" /><TextBlock x:Name="DurationText" Grid.Column="1" FontSize="13" />
+                            <TextBlock Grid.Row="1" Text="Resolution" Style="{StaticResource PxCaption}" /><TextBlock x:Name="ResText" Grid.Row="1" Grid.Column="1" FontSize="13" />
+                            <TextBlock Grid.Row="2" Text="Size" Style="{StaticResource PxCaption}" /><TextBlock x:Name="SizeText" Grid.Row="2" Grid.Column="1" FontSize="13" />
+                            <TextBlock Grid.Row="3" Text="Format" Style="{StaticResource PxCaption}" /><TextBlock Grid.Row="3" Grid.Column="1" FontSize="13" Text="MP4 (H.264 / AAC)" />
+                            <TextBlock Grid.Row="4" Text="Created" Style="{StaticResource PxCaption}" /><TextBlock x:Name="DateText" Grid.Row="4" Grid.Column="1" FontSize="13" />
+                            <TextBlock Grid.Row="5" Text="Location" Style="{StaticResource PxCaption}" /><TextBlock x:Name="PathText" Grid.Row="5" Grid.Column="1" FontSize="12" TextWrapping="Wrap" IsTextSelectionEnabled="True" Foreground="{ThemeResource PxTextSecondary}" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource PxPanel}">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="ACTIONS" Style="{StaticResource PxLabelCaps}" />
+                        <Button Style="{StaticResource PxPrimaryButton}" HorizontalAlignment="Stretch" Click="SaveAs_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE792;" FontSize="14" /><TextBlock Text="Save as…" /></StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource PxSecondaryButton}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Click="Export_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xEDE1;" FontSize="14" /><TextBlock Text="Export to folder…" /></StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource PxSecondaryButton}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Click="Rename_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE8AC;" FontSize="14" /><TextBlock Text="Rename" /></StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource PxSecondaryButton}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Click="Reveal_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE838;" FontSize="14" /><TextBlock Text="Show in File Explorer" /></StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource PxSecondaryButton}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Click="Copy_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE8C8;" FontSize="14" /><TextBlock Text="Copy file" /></StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource PxSecondaryButton}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Click="Favorite_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon x:Name="FavGlyph" Glyph="&#xE734;" FontSize="14" /><TextBlock x:Name="FavText" Text="Add to favorites" /></StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource PxGhostButton}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Click="Trash_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE74D;" FontSize="14" /><TextBlock Text="Move to Trash" /></StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

@@ -1,0 +1,227 @@
+<Page
+    x:Class="PIXORA.App.Pages.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:PIXORA.App.ViewModels"
+    Background="{ThemeResource PxBg0}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="ShotTemplate" x:DataType="vm:MediaCardViewModel">
+            <Grid Width="250" CornerRadius="10" Background="{ThemeResource PxSurface}" BorderBrush="{ThemeResource PxBorder}" BorderThickness="1">
+                <Grid.RowDefinitions><RowDefinition Height="132" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                <Grid Background="{ThemeResource PxBg1}">
+                    <FontIcon Glyph="{x:Bind PlaceholderGlyph}" FontSize="28" Foreground="{ThemeResource PxTextMuted}" Visibility="{x:Bind PlaceholderVisibility}" />
+                    <Image Source="{x:Bind Thumb}" Stretch="UniformToFill" />
+                    <Border Style="{StaticResource PxBadge}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8" Background="#CC0D0D0F">
+                        <TextBlock Text="{x:Bind KindBadge}" Style="{StaticResource PxBadgeText}" Foreground="#E5EEF0" />
+                    </Border>
+                    <Border Style="{StaticResource PxBadge}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="8" Background="#CC0D0D0F">
+                        <TextBlock Text="{x:Bind Dimensions}" Style="{StaticResource PxBadgeText}" Foreground="#E5EEF0" />
+                    </Border>
+                </Grid>
+                <StackPanel Grid.Row="1" Padding="10,8" Spacing="2">
+                    <Grid>
+                        <TextBlock Text="{x:Bind Name}" FontSize="13" FontWeight="Medium" TextTrimming="CharacterEllipsis" Margin="0,0,60,0" Foreground="{ThemeResource PxText}" />
+                        <TextBlock Text="{x:Bind When}" Style="{StaticResource PxCaption}" HorizontalAlignment="Right" />
+                    </Grid>
+                    <Grid>
+                        <TextBlock Text="{x:Bind Status}" Style="{StaticResource PxCaption}" />
+                        <TextBlock Text="{x:Bind SizeText}" Style="{StaticResource PxCaption}" HorizontalAlignment="Right" />
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="RecTemplate" x:DataType="vm:MediaCardViewModel">
+            <Grid Padding="10" ColumnSpacing="12" CornerRadius="10" Background="{ThemeResource PxSurface}" BorderBrush="{ThemeResource PxBorder}" BorderThickness="1">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="88" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                <Grid Height="54" CornerRadius="6" Background="{ThemeResource PxBg1}">
+                    <FontIcon Glyph="&#xE714;" FontSize="18" Foreground="{ThemeResource PxTextMuted}" Visibility="{x:Bind PlaceholderVisibility}" />
+                    <Image Source="{x:Bind Thumb}" Stretch="UniformToFill" />
+                    <Border Background="#CC0D0D0F" CornerRadius="4" Padding="4,1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="4">
+                        <TextBlock Text="{x:Bind DurationText}" FontSize="10" Foreground="#E5EEF0" />
+                    </Border>
+                </Grid>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                    <TextBlock Text="{x:Bind Name}" FontSize="13" FontWeight="Medium" TextTrimming="CharacterEllipsis" Foreground="{ThemeResource PxText}" />
+                    <TextBlock Style="{StaticResource PxCaption}">
+                        <Run Text="{x:Bind When}" /><Run Text="  ·  " /><Run Text="{x:Bind SizeText}" />
+                    </TextBlock>
+                </StackPanel>
+                <FontIcon Grid.Column="2" Glyph="&#xE768;" FontSize="14" Foreground="{ThemeResource PxTextSecondary}" />
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <ScrollViewer>
+        <StackPanel Padding="28,22,28,28" Spacing="22" MaxWidth="1400">
+
+            <!-- Hero -->
+            <Grid>
+                <StackPanel Spacing="6">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Ellipse x:Name="StatusDot" Width="8" Height="8" Fill="{StaticResource PxSuccess}" VerticalAlignment="Center" />
+                        <TextBlock x:Name="StatusCaps" Text="CAPTURE ENGINE READY" Style="{StaticResource PxLabelCaps}" />
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource PxHeadlineLg}">
+                        <Run Text="Welcome to " /><Run Text="PIXORA" Foreground="{StaticResource PxAccent}" />
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource PxBodySecondary}" MaxWidth="620" HorizontalAlignment="Left"
+                               Text="Capture anything. Turn it into something. Everything stays on this PC: no cloud uploads, no tracking." />
+                </StackPanel>
+                <Border HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="{ThemeResource PxSurface}" BorderBrush="{ThemeResource PxBorder}"
+                        BorderThickness="1" CornerRadius="999" Padding="14,6">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon x:Name="StatusIcon" Glyph="&#xE73E;" FontSize="14" Foreground="{StaticResource PxSuccess}" />
+                        <TextBlock x:Name="StatusText" Text="Ready" VerticalAlignment="Center" FontSize="13" Foreground="{ThemeResource PxText}" />
+                        <Border Width="1" Background="{ThemeResource PxBorder}" Margin="2,2" />
+                        <Border Style="{StaticResource PxBadge}">
+                            <TextBlock x:Name="StatusShortcut" Style="{StaticResource PxBadgeText}" />
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Primary actions -->
+            <Grid ColumnSpacing="14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition /><ColumnDefinition /><ColumnDefinition /><ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button Style="{StaticResource PxCardButton}" Click="Screenshot_Click" AutomationProperties.Name="Screenshot">
+                    <StackPanel Spacing="10" Padding="4,8">
+                        <Border Style="{StaticResource PxIconTile}"><FontIcon Glyph="&#xE7A8;" FontSize="22" /></Border>
+                        <TextBlock Text="Screenshot" Style="{StaticResource PxHeadlineSm}" HorizontalAlignment="Center" />
+                        <TextBlock Text="Capture a region, a window or the whole desktop" Style="{StaticResource PxBodySecondary}" FontSize="12" TextAlignment="Center" />
+                        <Border Style="{StaticResource PxBadge}" HorizontalAlignment="Center"><TextBlock x:Name="ShotKey" Style="{StaticResource PxBadgeText}" /></Border>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="1" Style="{StaticResource PxCardButton}" Click="Record_Click" AutomationProperties.Name="Screen Record">
+                    <StackPanel Spacing="10" Padding="4,8">
+                        <Border Style="{StaticResource PxIconTile}"><FontIcon Glyph="&#xE7C8;" FontSize="22" Foreground="{StaticResource PxAccent}" /></Border>
+                        <TextBlock Text="Screen Record" Style="{StaticResource PxHeadlineSm}" HorizontalAlignment="Center" />
+                        <TextBlock Text="Record the screen with system audio and microphone" Style="{StaticResource PxBodySecondary}" FontSize="12" TextAlignment="Center" />
+                        <Border Style="{StaticResource PxBadge}" HorizontalAlignment="Center"><TextBlock x:Name="RecKey" Style="{StaticResource PxBadgeText}" /></Border>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="2" Style="{StaticResource PxCardButton}" Click="Editor_Click" AutomationProperties.Name="Open Editor">
+                    <StackPanel Spacing="10" Padding="4,8">
+                        <Border Style="{StaticResource PxIconTile}"><FontIcon Glyph="&#xE70F;" FontSize="22" /></Border>
+                        <TextBlock Text="Open Editor" Style="{StaticResource PxHeadlineSm}" HorizontalAlignment="Center" />
+                        <TextBlock Text="Annotate, redact, number steps and crop" Style="{StaticResource PxBodySecondary}" FontSize="12" TextAlignment="Center" />
+                        <Border Style="{StaticResource PxBadge}" HorizontalAlignment="Center"><TextBlock x:Name="EditKey" Style="{StaticResource PxBadgeText}" /></Border>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="3" Style="{StaticResource PxCardButton}" Click="Library_Click" AutomationProperties.Name="View Library">
+                    <StackPanel Spacing="10" Padding="4,8">
+                        <Border Style="{StaticResource PxIconTile}"><FontIcon Glyph="&#xE8B9;" FontSize="22" /></Border>
+                        <TextBlock Text="View Library" Style="{StaticResource PxHeadlineSm}" HorizontalAlignment="Center" />
+                        <TextBlock x:Name="LibrarySummary" Text="Browse your captures and clips" Style="{StaticResource PxBodySecondary}" FontSize="12" TextAlignment="Center" />
+                        <Border Style="{StaticResource PxBadge}" HorizontalAlignment="Center"><TextBlock Text="Ctrl + 5" Style="{StaticResource PxBadgeText}" /></Border>
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <!-- Quick actions -->
+            <Border Background="{ThemeResource PxBg1}" BorderBrush="{ThemeResource PxBorder}" BorderThickness="1" CornerRadius="12" Padding="8">
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition /><ColumnDefinition /><ColumnDefinition /><ColumnDefinition /><ColumnDefinition /><ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Style="{StaticResource PxCardButton}" Padding="8,12" Tag="CaptureRegion" Click="Quick_Click" AutomationProperties.Name="Capture Region">
+                        <StackPanel Spacing="6"><FontIcon Glyph="&#xE8B3;" FontSize="18" /><TextBlock Text="Capture Region" FontSize="13" HorizontalAlignment="Center" /><TextBlock Text="Custom area" Style="{StaticResource PxCaption}" HorizontalAlignment="Center" /></StackPanel>
+                    </Button>
+                    <Button Grid.Column="1" Style="{StaticResource PxCardButton}" Padding="8,12" Tag="CaptureWindow" Click="Quick_Click" AutomationProperties.Name="Capture Window">
+                        <StackPanel Spacing="6"><FontIcon Glyph="&#xE737;" FontSize="18" /><TextBlock Text="Capture Window" FontSize="13" HorizontalAlignment="Center" /><TextBlock Text="Single app" Style="{StaticResource PxCaption}" HorizontalAlignment="Center" /></StackPanel>
+                    </Button>
+                    <Button Grid.Column="2" Style="{StaticResource PxCardButton}" Padding="8,12" Tag="CaptureFull" Click="Quick_Click" AutomationProperties.Name="Capture Fullscreen">
+                        <StackPanel Spacing="6"><FontIcon Glyph="&#xE740;" FontSize="18" /><TextBlock Text="Capture Fullscreen" FontSize="13" HorizontalAlignment="Center" /><TextBlock Text="All monitors" Style="{StaticResource PxCaption}" HorizontalAlignment="Center" /></StackPanel>
+                    </Button>
+                    <Button Grid.Column="3" Style="{StaticResource PxCardButton}" Padding="8,12" Tag="RecordScreen" Click="Quick_Click" AutomationProperties.Name="Record Screen">
+                        <StackPanel Spacing="6"><FontIcon Glyph="&#xE7F4;" FontSize="18" Foreground="{StaticResource PxAccent}" /><TextBlock Text="Record Screen" FontSize="13" HorizontalAlignment="Center" /><TextBlock x:Name="RecordScreenSub" Text="Primary display" Style="{StaticResource PxCaption}" HorizontalAlignment="Center" /></StackPanel>
+                    </Button>
+                    <Button Grid.Column="4" Style="{StaticResource PxCardButton}" Padding="8,12" Tag="RecordWindow" Click="Quick_Click" AutomationProperties.Name="Record Window">
+                        <StackPanel Spacing="6"><FontIcon Glyph="&#xE737;" FontSize="18" Foreground="{StaticResource PxAccent}" /><TextBlock Text="Record Window" FontSize="13" HorizontalAlignment="Center" /><TextBlock Text="Follows one app" Style="{StaticResource PxCaption}" HorizontalAlignment="Center" /></StackPanel>
+                    </Button>
+                    <Button Grid.Column="5" Style="{StaticResource PxCardButton}" Padding="8,12" Tag="RecordRegion" Click="Quick_Click" AutomationProperties.Name="Record Region">
+                        <StackPanel Spacing="6"><FontIcon Glyph="&#xE8B3;" FontSize="18" Foreground="{StaticResource PxAccent}" /><TextBlock Text="Record Region" FontSize="13" HorizontalAlignment="Center" /><TextBlock Text="Custom area" Style="{StaticResource PxCaption}" HorizontalAlignment="Center" /></StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Recents -->
+            <Grid ColumnSpacing="22">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.35*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Spacing="12">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <FontIcon Glyph="&#xEB9F;" FontSize="16" />
+                            <TextBlock Text="Recent Screenshots" Style="{StaticResource PxHeadlineSm}" />
+                            <Border Style="{StaticResource PxBadge}"><TextBlock x:Name="ShotCountText" Style="{StaticResource PxBadgeText}" /></Border>
+                        </StackPanel>
+                        <HyperlinkButton HorizontalAlignment="Right" Padding="4" Click="Library_Click" Foreground="{StaticResource PxAccent}">
+                            <StackPanel Orientation="Horizontal" Spacing="6"><TextBlock Text="Open Library" /><FontIcon Glyph="&#xE72A;" FontSize="12" /></StackPanel>
+                        </HyperlinkButton>
+                    </Grid>
+                    <GridView x:Name="ShotsGrid" ItemTemplate="{StaticResource ShotTemplate}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="Shot_ItemClick" />
+                    <Border x:Name="ShotsEmpty" Style="{StaticResource PxPanel}" Visibility="Collapsed" Padding="24">
+                        <StackPanel Spacing="6" HorizontalAlignment="Center">
+                            <FontIcon Glyph="&#xE7A8;" FontSize="24" Foreground="{ThemeResource PxTextMuted}" />
+                            <TextBlock Text="No screenshots yet" Style="{StaticResource PxHeadlineSm}" HorizontalAlignment="Center" />
+                            <TextBlock x:Name="ShotsEmptyHint" Style="{StaticResource PxCaption}" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Spacing="12">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <FontIcon Glyph="&#xE714;" FontSize="16" />
+                            <TextBlock Text="Screen Recordings" Style="{StaticResource PxHeadlineSm}" />
+                            <Border Style="{StaticResource PxBadge}"><TextBlock x:Name="RecCountText" Style="{StaticResource PxBadgeText}" /></Border>
+                        </StackPanel>
+                        <HyperlinkButton HorizontalAlignment="Right" Padding="4" Click="Recordings_Click" Foreground="{StaticResource PxAccent}">
+                            <StackPanel Orientation="Horizontal" Spacing="6"><TextBlock Text="Show all" /><FontIcon Glyph="&#xE72A;" FontSize="12" /></StackPanel>
+                        </HyperlinkButton>
+                    </Grid>
+                    <ListView x:Name="RecList" ItemTemplate="{StaticResource RecTemplate}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="Rec_ItemClick">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem" BasedOn="{StaticResource DefaultListViewItemStyle}">
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Margin" Value="0,0,0,8" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                    <Border x:Name="RecEmpty" Style="{StaticResource PxPanel}" Visibility="Collapsed" Padding="24">
+                        <StackPanel Spacing="6" HorizontalAlignment="Center">
+                            <FontIcon Glyph="&#xE714;" FontSize="24" Foreground="{ThemeResource PxTextMuted}" />
+                            <TextBlock Text="No recordings yet" Style="{StaticResource PxHeadlineSm}" HorizontalAlignment="Center" />
+                            <TextBlock x:Name="RecEmptyHint" Style="{StaticResource PxCaption}" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                    <Grid Padding="4,0" ColumnSpacing="8">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                        <FontIcon Glyph="&#xE720;" FontSize="14" Foreground="{ThemeResource PxTextSecondary}" />
+                        <TextBlock x:Name="MicText" Grid.Column="1" Style="{StaticResource PxCaption}" VerticalAlignment="Center" />
+                        <HyperlinkButton Grid.Column="2" Content="Change device" Padding="4" FontSize="12" Click="Settings_Click" Foreground="{StaticResource PxAccent}" />
+                    </Grid>
+                </StackPanel>
+            </Grid>
+
+            <!-- Hotkeys -->
+            <Border Background="{ThemeResource PxBg1}" BorderBrush="{ThemeResource PxBorder}" BorderThickness="1" CornerRadius="12" Padding="18,14">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                        <FontIcon Glyph="&#xE765;" FontSize="16" Foreground="{ThemeResource PxTextSecondary}" />
+                        <TextBlock Text="GLOBAL HOTKEYS" Style="{StaticResource PxLabelCaps}" VerticalAlignment="Center" />
+                        <TextBlock x:Name="HotkeyWarning" Foreground="{StaticResource PxError}" FontSize="12" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel x:Name="HotkeyList" Orientation="Horizontal" Spacing="18" HorizontalAlignment="Right" />
+                </Grid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

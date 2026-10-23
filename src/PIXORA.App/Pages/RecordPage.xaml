@@ -1,0 +1,208 @@
+<Page
+    x:Class="PIXORA.App.Pages.RecordPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource PxBg0}">
+
+    <ScrollViewer>
+        <Grid Padding="28,20,28,24" RowSpacing="18" ColumnSpacing="18" MaxWidth="1400">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="380" /></Grid.ColumnDefinitions>
+            <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+
+            <!-- Header + source switch -->
+            <Grid Grid.ColumnSpan="2">
+                <StackPanel Orientation="Horizontal" Spacing="14">
+                    <Border Style="{StaticResource PxIconTile}" Width="48" Height="48"><FontIcon Glyph="&#xE714;" FontSize="20" Foreground="{StaticResource PxAccent}" /></Border>
+                    <StackPanel VerticalAlignment="Center" Spacing="2">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Text="Screen Recorder" Style="{StaticResource PxHeadlineMd}" />
+                            <Border Style="{StaticResource PxBadge}" BorderBrush="#336FDB9C"><TextBlock Text="MP4 · H.264 · AAC" Style="{StaticResource PxBadgeText}" Foreground="{StaticResource PxSuccess}" /></Border>
+                        </StackPanel>
+                        <TextBlock Text="Hardware-accelerated recording through Windows Graphics Capture and Media Foundation" Style="{StaticResource PxCaption}" />
+                    </StackPanel>
+                </StackPanel>
+                <Border HorizontalAlignment="Right" VerticalAlignment="Center" Background="{ThemeResource PxBg1}" BorderBrush="{ThemeResource PxBorder}" BorderThickness="1" CornerRadius="10" Padding="4">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <ToggleButton x:Name="SrcScreen" Tag="Monitor" Click="Source_Click" Style="{StaticResource PxToolToggle}" IsChecked="True">
+                            <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE740;" FontSize="14" /><TextBlock Text="Full Screen" /></StackPanel>
+                        </ToggleButton>
+                        <ToggleButton x:Name="SrcWindow" Tag="Window" Click="Source_Click" Style="{StaticResource PxToolToggle}">
+                            <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE737;" FontSize="14" /><TextBlock Text="Window" /></StackPanel>
+                        </ToggleButton>
+                        <ToggleButton x:Name="SrcRegion" Tag="Region" Click="Source_Click" Style="{StaticResource PxToolToggle}">
+                            <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE8B3;" FontSize="14" /><TextBlock Text="Selected Region" /></StackPanel>
+                        </ToggleButton>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Source preview -->
+            <Border Grid.Row="1" Style="{StaticResource PxPanel}" Padding="14">
+                <Grid RowSpacing="10">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <FontIcon Glyph="&#xE7F4;" FontSize="15" />
+                            <TextBlock x:Name="SourceTitle" FontWeight="SemiBold" VerticalAlignment="Center" />
+                            <Border Style="{StaticResource PxBadge}"><TextBlock x:Name="SourceBadge" Style="{StaticResource PxBadgeText}" /></Border>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                            <ComboBox x:Name="MonitorBox" DisplayMemberPath="Label" MinWidth="220" SelectionChanged="Monitor_Changed" />
+                            <Button Style="{StaticResource PxGhostButton}" Click="RefreshPreview_Click" ToolTipService.ToolTip="Refresh preview"><FontIcon Glyph="&#xE72C;" FontSize="14" /></Button>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1" Height="380" CornerRadius="10" Background="{ThemeResource PxBg1}" BorderBrush="{ThemeResource PxBorder}" BorderThickness="1">
+                        <Image x:Name="PreviewImage" Stretch="Uniform" Opacity="0.55" />
+                        <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="#E61A1A1D" BorderBrush="{ThemeResource PxBorder}" BorderThickness="1" CornerRadius="12" Padding="22,18" MaxWidth="460">
+                            <StackPanel Spacing="8">
+                                <Border Width="44" Height="44" CornerRadius="22" Background="{ThemeResource PxElevated}" HorizontalAlignment="Center"><FontIcon x:Name="TargetGlyph" Glyph="&#xE740;" FontSize="18" /></Border>
+                                <TextBlock x:Name="TargetTitle" Style="{StaticResource PxHeadlineSm}" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Foreground="#E5EEF0" />
+                                <TextBlock x:Name="TargetDetail" Style="{StaticResource PxCaption}" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" TextTrimming="None" Foreground="#A3A3AA" />
+                                <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center" Margin="0,4,0,0">
+                                    <Button Style="{StaticResource PxSecondaryButton}" Click="PickWindow_Click">
+                                        <StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE737;" FontSize="13" /><TextBlock Text="Pick window" /></StackPanel>
+                                    </Button>
+                                    <Button Style="{StaticResource PxPrimaryButton}" Click="PickRegion_Click">
+                                        <StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE7A8;" FontSize="13" /><TextBlock Text="Select region" /></StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- Encoder parameters -->
+            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource PxPanel}" Padding="18">
+                <StackPanel Spacing="14">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xE9E9;" FontSize="16" Foreground="{StaticResource PxAccent}" />
+                        <TextBlock Text="Encoder parameters" Style="{StaticResource PxHeadlineSm}" />
+                    </StackPanel>
+                    <Border Background="{ThemeResource PxBg1}" BorderBrush="{ThemeResource PxBorder}" BorderThickness="1" CornerRadius="8" Padding="12,8">
+                        <StackPanel>
+                            <TextBlock Text="MP4 / H.264 + AAC" FontWeight="SemiBold" Foreground="{StaticResource PxAccent}" />
+                            <TextBlock Text="Hardware encoder when available, software fallback otherwise" Style="{StaticResource PxCaption}" />
+                        </StackPanel>
+                    </Border>
+                    <Grid ColumnSpacing="12" RowSpacing="12">
+                        <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                        <ComboBox x:Name="FpsBox" Header="Frame rate" HorizontalAlignment="Stretch" SelectionChanged="Setting_SelectionChanged">
+                            <ComboBoxItem Content="15 FPS" Tag="15" /><ComboBoxItem Content="24 FPS" Tag="24" /><ComboBoxItem Content="30 FPS" Tag="30" /><ComboBoxItem Content="60 FPS" Tag="60" />
+                        </ComboBox>
+                        <ComboBox x:Name="QualityBox" Grid.Column="1" Header="Quality" HorizontalAlignment="Stretch" SelectionChanged="Setting_SelectionChanged">
+                            <ComboBoxItem Content="Small file" Tag="Low" /><ComboBoxItem Content="Balanced" Tag="Medium" /><ComboBoxItem Content="High" Tag="High" />
+                        </ComboBox>
+                        <ComboBox x:Name="ResBox" Grid.Row="1" Grid.ColumnSpan="2" Header="Output resolution" HorizontalAlignment="Stretch" SelectionChanged="Setting_SelectionChanged">
+                            <ComboBoxItem Content="Native (same as source)" Tag="0" /><ComboBoxItem Content="Up to 2160p" Tag="2160" /><ComboBoxItem Content="Up to 1440p" Tag="1440" />
+                            <ComboBoxItem Content="Up to 1080p" Tag="1080" /><ComboBoxItem Content="Up to 720p" Tag="720" /><ComboBoxItem Content="Up to 480p" Tag="480" />
+                        </ComboBox>
+                    </Grid>
+                    <CheckBox x:Name="CursorBox" Content="Show mouse cursor in the recording" Click="Setting_Click" />
+                    <Grid>
+                        <TextBlock Text="START DELAY" Style="{StaticResource PxLabelCaps}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right">
+                            <ToggleButton x:Name="Delay0" Tag="0" Content="None" Click="Delay_Click" Style="{StaticResource PxToolToggle}" />
+                            <ToggleButton x:Name="Delay3" Tag="3" Content="3 sec" Click="Delay_Click" Style="{StaticResource PxToolToggle}" />
+                            <ToggleButton x:Name="Delay5" Tag="5" Content="5 sec" Click="Delay_Click" Style="{StaticResource PxToolToggle}" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Audio -->
+            <Grid Grid.Row="2" ColumnSpacing="18">
+                <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
+                <Border Style="{StaticResource PxPanel}">
+                    <StackPanel Spacing="10">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon Glyph="&#xE720;" FontSize="16" Foreground="{StaticResource PxSuccess}" />
+                                <TextBlock Text="Microphone" Style="{StaticResource PxHeadlineSm}" />
+                            </StackPanel>
+                            <ToggleSwitch x:Name="MicSwitch" Grid.Column="1" OnContent="On" OffContent="Off" MinWidth="0" Toggled="Setting_Toggled" />
+                        </Grid>
+                        <ComboBox x:Name="MicBox" HorizontalAlignment="Stretch" DisplayMemberPath="Name" PlaceholderText="No microphone found" SelectionChanged="Setting_SelectionChanged" />
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition /><ColumnDefinition Width="44" /></Grid.ColumnDefinitions>
+                            <FontIcon Glyph="&#xE767;" FontSize="13" Foreground="{ThemeResource PxTextSecondary}" />
+                            <Slider x:Name="MicVolume" Grid.Column="1" Minimum="0" Maximum="200" StepFrequency="5" ValueChanged="Volume_Changed" />
+                            <TextBlock x:Name="MicVolumeText" Grid.Column="2" Style="{StaticResource PxCaption}" VerticalAlignment="Center" />
+                        </Grid>
+                        <ProgressBar x:Name="MicLevel" Maximum="1" Foreground="{StaticResource PxSuccess}" Background="{ThemeResource PxBorder}" />
+                        <TextBlock x:Name="MicNote" Style="{StaticResource PxCaption}" Text="Level meter is live while recording." />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource PxPanel}">
+                    <StackPanel Spacing="10">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon Glyph="&#xE767;" FontSize="16" Foreground="{StaticResource PxAccent}" />
+                                <TextBlock Text="System sounds" Style="{StaticResource PxHeadlineSm}" />
+                            </StackPanel>
+                            <ToggleSwitch x:Name="SysSwitch" Grid.Column="1" OnContent="On" OffContent="Off" MinWidth="0" Toggled="Setting_Toggled" />
+                        </Grid>
+                        <TextBlock x:Name="SpeakerName" FontSize="13" TextTrimming="CharacterEllipsis" Margin="0,6,0,6" />
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition /><ColumnDefinition Width="44" /></Grid.ColumnDefinitions>
+                            <FontIcon Glyph="&#xE767;" FontSize="13" Foreground="{ThemeResource PxTextSecondary}" />
+                            <Slider x:Name="SysVolume" Grid.Column="1" Minimum="0" Maximum="200" StepFrequency="5" ValueChanged="Volume_Changed" />
+                            <TextBlock x:Name="SysVolumeText" Grid.Column="2" Style="{StaticResource PxCaption}" VerticalAlignment="Center" />
+                        </Grid>
+                        <ProgressBar x:Name="SysLevel" Maximum="1" Foreground="{StaticResource PxSuccess}" Background="{ThemeResource PxBorder}" />
+                        <TextBlock Style="{StaticResource PxCaption}" TextWrapping="Wrap" TextTrimming="None" Text="WASAPI loopback: captures what plays through your default speakers." />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Start -->
+            <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource PxPanel}" Padding="18">
+                <StackPanel Spacing="10" VerticalAlignment="Center">
+                    <Button x:Name="RecButton" Width="116" Height="116" CornerRadius="58" HorizontalAlignment="Center" Click="Rec_Click"
+                            Style="{StaticResource PxPrimaryButton}" BorderBrush="#66C75C64" BorderThickness="6" AutomationProperties.Name="Start recording">
+                        <StackPanel Spacing="6">
+                            <Ellipse x:Name="RecGlyphDot" Width="30" Height="30" Fill="#7A1F28" Stroke="White" StrokeThickness="0" />
+                            <Rectangle x:Name="RecGlyphStop" Width="26" Height="26" RadiusX="4" RadiusY="4" Fill="White" Visibility="Collapsed" />
+                            <TextBlock x:Name="RecButtonText" Text="REC" FontWeight="Bold" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                        <TextBlock x:Name="RecCaption" Text="Start capture" Style="{StaticResource PxHeadlineSm}" VerticalAlignment="Center" />
+                        <Border Style="{StaticResource PxBadge}"><TextBlock x:Name="RecKey" Style="{StaticResource PxBadgeText}" /></Border>
+                    </StackPanel>
+                    <TextBlock x:Name="RecHelp" Style="{StaticResource PxCaption}" TextAlignment="Center" TextWrapping="Wrap" TextTrimming="None" HorizontalAlignment="Center" />
+                </StackPanel>
+            </Border>
+
+            <!-- Status bar -->
+            <Border Grid.Row="3" Grid.ColumnSpan="2" Style="{StaticResource PxPanel}" Padding="18,12">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <Ellipse x:Name="StateDot" Width="12" Height="12" Fill="{ThemeResource PxTextMuted}" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" Spacing="2" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock x:Name="TimerText" Text="00:00" FontSize="20" FontFamily="{StaticResource PxMono}" FontWeight="SemiBold" />
+                            <Border x:Name="StateBadge" Style="{StaticResource PxBadge}" VerticalAlignment="Center"><TextBlock x:Name="StateText" Text="IDLE" Style="{StaticResource PxBadgeText}" /></Border>
+                        </StackPanel>
+                        <TextBlock x:Name="StatusDetail" Style="{StaticResource PxCaption}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <Button x:Name="PauseButton" Style="{StaticResource PxSecondaryButton}" Click="Pause_Click" IsEnabled="False" ToolTipService.ToolTip="Pause / resume">
+                            <StackPanel Orientation="Horizontal" Spacing="6"><FontIcon x:Name="PauseGlyph" Glyph="&#xE769;" FontSize="13" /><TextBlock x:Name="PauseText" Text="Pause" /></StackPanel>
+                        </Button>
+                        <Button x:Name="StopButton" Style="{StaticResource PxPrimaryButton}" Click="Stop_Click" IsEnabled="False">
+                            <StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE71A;" FontSize="13" /><TextBlock Text="Stop" /></StackPanel>
+                        </Button>
+                        <Border Width="1" Background="{ThemeResource PxBorder}" Margin="4,4" />
+                        <Button Style="{StaticResource PxGhostButton}" Click="OpenFolder_Click" ToolTipService.ToolTip="Open recordings folder">
+                            <StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE838;" FontSize="14" /><TextBlock Text="Recordings folder" /></StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</Page>

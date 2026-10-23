@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>PIXORA.App</RootNamespace>
+    <AssemblyName>PIXORA</AssemblyName>
+    <AssemblyTitle>PIXORA Capture Studio</AssemblyTitle>
+    <UseWinUI>true</UseWinUI>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <SelfContained>true</SelfContained>
+    <EnableMsixTooling>true</EnableMsixTooling>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>..\..\assets\brand\pixora.ico</ApplicationIcon>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <NoWarn>$(NoWarn);MVVMTK0045</NoWarn>
+    <DebugType Condition="'$(Configuration)' == 'Release'">none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\..\assets\brand\pixora.ico" Link="Assets\pixora.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\assets\brand\pixora-256.png" Link="Assets\pixora-256.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\assets\brand\pixora-mark-256.png" Link="Assets\pixora-mark-256.png" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Only the Windows App SDK components PIXORA uses (the metapackage would also ship ~40 MB of AI/ML runtimes). -->
+    <PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="2.3.12" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="2.1.9" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="2.3.9" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1721" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.13" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PIXORA.Core\PIXORA.Core.csproj" />
+    <ProjectReference Include="..\PIXORA.Editor\PIXORA.Editor.csproj" />
+    <ProjectReference Include="..\PIXORA.Library\PIXORA.Library.csproj" />
+    <ProjectReference Include="..\PIXORA.Capture\PIXORA.Capture.csproj" />
+    <ProjectReference Include="..\PIXORA.Recording\PIXORA.Recording.csproj" />
+  </ItemGroup>
+  <!-- SkiaSharp ships a 90 MB native symbol file; it is not needed at runtime. -->
+  <Target Name="RemoveNativeSymbols" AfterTargets="Publish">
+    <Delete Files="$(PublishDir)libSkiaSharp.pdb" />
+  </Target>
+</Project>
+
+
+
