@@ -25,8 +25,6 @@ events and error messages only, never captured content. Kept for 14 days.
 ## Known limitations
 
 - **Webcam overlay** (shown in the design) is not implemented in v1.0.0. No webcam controls are shown.
-- **Logo** is a stand-in aperture mark; the approved Stitch logo file was not obtainable (remote URL returned 403).
-  Replace `assets/brand/*` and re-run `tools/IconGen` (or drop in PNG/ICO files) when the original is available.
 - **Font**: the design specifies Inter; the app uses Segoe UI Variable (bundled with Windows) to avoid shipping fonts.
 - A region selection is limited to one monitor; *Full Screen* captures all monitors together.
 - Recording is MP4 (H.264/AAC) only; no MKV, GIF or trimming/editing of videos.

@@ -4,7 +4,7 @@
 |---|---|
 | `F:\` exists / writable | Yes. `F:\PIXORA` did not exist; created fresh (nothing overwritten). |
 | Design archive | `%USERPROFILE%\Downloads\stitch_pixora_capture_studio.zip`: 8 screens (`code.html` + `screen.png` each) and `fluent_dark_capture/DESIGN.md` (tokens). Extracted copies kept out of the repo; reference screenshots are not committed. |
-| Approved logo | Only referenced as a remote `lh3.googleusercontent.com/aida/...` image in the HTML. With approval it was requested and returned **HTTP 403**, so a stand-in aperture mark was drawn (`tools/IconGen`). Replace `assets/brand/*` when the original file is available. |
+| Approved logo | Only referenced as a remote `lh3.googleusercontent.com/aida/...` image in the HTML. With approval it was requested and returned **HTTP 403**, so a stand-in mark was used at first. The owner then supplied the logo image (2026-10-23); its painted checkerboard background was removed to real transparency and saved as `assets/brand/pixora-logo.png`, from which `tools/IconGen` generates every icon size and `pixora.ico`. |
 | .NET | SDK 10.0.400; runtimes Microsoft.NETCore.App / WindowsDesktop.App 10.0.11. |
 | Visual Studio / Build Tools | Not installed. WinUI 3 builds with the .NET SDK + NuGet packages alone (verified). |
 | Windows SDK | 10.0.26100.0 installed; build uses Microsoft.Windows.SDK.BuildTools 10.0.28000.1721 from NuGet. |

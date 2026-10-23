@@ -40,7 +40,7 @@ src/PIXORA.Recording   Windows.Graphics.Capture + NAudio + MediaTranscoder recor
 src/PIXORA.App         WinUI 3 app (MVVM + DI), overlay/HUD windows, tray + global hotkeys
 tests/PIXORA.Tests     xUnit tests for every layer
 packaging/             NSIS installer + build script
-tools/IconGen          regenerates the icon set in assets/brand
+tools/IconGen          regenerates the icon set from assets/brand/pixora-logo.png
 docs/                  architecture, install, user guide, testing, troubleshooting, launcher, release
 ```
 

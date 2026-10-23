@@ -21,7 +21,6 @@
 
 **Open items**
 - Webcam overlay (not implemented).
-- Original logo asset (stand-in in use).
 - Code signing certificate.
 - Make the GitHub repo public (or otherwise host the installer) and publish release v1.0.0 so NOVU Launcher can
   download it; merge the launcher branch.
