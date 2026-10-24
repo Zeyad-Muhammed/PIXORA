@@ -1,5 +1,19 @@
 # Progress log
 
+## 2026-10-25: v1.1.0 (not released yet)
+
+**Done**
+- Basic video editing for recordings: timeline with frame thumbnails and ruler, split, delete parts, trim by
+  dragging edges, mute part / whole video, undo/redo, zoom, preview that skips removed parts, export to a new MP4
+  via Windows.Media.Editing (original never modified). Entry points: Preview page and Library.
+- `VideoTimeline` cut-list model (PIXORA.Editor) and `VideoEditing` export/thumbnails (PIXORA.Recording).
+- Fixed during testing: Windows' batch `GetThumbnailsAsync` returned the first frame for every time, so thumbnails
+  are now fetched one by one; ruler shows tenths when ticks are under a second.
+
+**Build / test**: 74/74 tests pass. Installer 49 MB (v1.1.0), installed locally.
+
+**Open items**: publish v1.1.0 (GitHub release `PIXORA-Setup.exe`, which NOVU Launcher downloads).
+
 ## 2026-10-23: v1.0.0
 
 **Done**

@@ -12,7 +12,7 @@ files with the Windows encoder. If no monitor is present they return early inste
 
 ## Results: 2026-10-23, Windows 11 Pro 26200, 2 monitors, Release build
 
-**59 / 59 passed** (40 non-desktop, 19 desktop).
+**74 / 74 passed** (50 non-desktop, 24 desktop) on 2026-10-25 with v1.1.0 (video editing added).
 
 | Area | Verified by tests |
 |---|---|
@@ -22,8 +22,15 @@ files with the Windows encoder. If no monitor is present they return early inste
 | Library | scan + persistence across instances; idempotent rescan; missing detection and recovery; search (incl. literal `%`/`_`), all sorts, categories, counts; trash/restore/remove never delete files; permanent delete requires the file to be gone; rename moves file, keeps extension, rejects collisions/invalid names; favourites persist; thumbnails created, cached, pruned |
 | Capture | monitor enumeration; monitor/virtual-screen captures have exact pixel sizes and are opaque; region capture matches the same area of a full capture; empty area and invalid window give friendly errors; window enumeration + capture; clipboard image (pixel-exact) and file-list round-trips; saver uses template/format and never overwrites; unwritable folder reported |
 | Recording | 3 s region recording → playable MP4 with 1 video track, correct size, duration 2.2–4.2 s, `.part` removed; with system audio → 1 audio + 1 video track, duration within 1 s of the recorder clock; pause excludes paused time; display recording scaled to 480p; start failure reported + recorder reusable; invalid window fails cleanly with no files; stop without recording rejected; device listing |
+| Video timeline | split/delete shorten the output; split refuses edges and removed parts; last part cannot be deleted; trims clamp to neighbours, bounds and a 0.2 s minimum; undo/redo for every edit and a drag counts as one step; mute all / reset; playback skips removed parts and maps source → output time |
+| Video export | cutting 1–3 s out of a 4.5 s recording (with audio, first part muted) gives a playable MP4 whose length matches the timeline (±0.6 s) and leaves the original byte-identical, with no `.part` left; trimming both ends matches the timeline; exporting over the original is refused; thumbnails decode at the requested height and show the real frame at their time (red/blue/green test video) |
 
 Playability was checked by opening each file with `Windows.Media.Core.MediaSource` and reading its tracks/duration.
+
+Video editor UI (2026-10-25, via UI Automation on a generated 6 s colour video): opened from Library → *Edit video*;
+thumbnails and ruler rendered; Split, Play/Pause, Delete part, Undo and Redo changed the timeline as expected (output
+length, part count and removed time read back from the page). Export through the save dialog and drag-trimming with
+the mouse were not automated; the export path itself is covered by the tests above.
 
 ## Also verified manually (this machine)
 

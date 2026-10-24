@@ -5,7 +5,7 @@ Native **WinUI 3 / .NET 10**, distributed through **NOVU Launcher** (NOVU Store)
 
 Everything stays on the PC: no cloud upload, no telemetry.
 
-## Features (v1.0.0)
+## Features (v1.1.0)
 
 | Area | What works |
 |---|---|
@@ -14,6 +14,7 @@ Everything stays on the PC: no cloud upload, no telemetry.
 | **Recording** | Display, window or region; system audio (WASAPI loopback) and microphone with independent live volume; 15/24/30/60 fps; native→480p output; quality presets; countdown; pause/resume; floating HUD that is excluded from the capture; H.264/AAC MP4 via Media Foundation. |
 | **Library** | SQLite index of screenshots and recordings; grid/list; thumbnails; search; sort; All/Screenshots/Recordings/Favorites/Trash; rename, open, reveal, copy, export, favourite, multi-select; trash (files untouched), remove entry, delete to Recycle Bin with confirmation; missing-file detection. |
 | **Preview** | Playback with system transport controls (play/pause, seek, volume), details, rename, save as, export, reveal. |
+| **Video editing** (1.1) | Timeline with frame thumbnails and a time ruler; split at the playhead, delete parts, trim by dragging part edges, mute a part or the whole video, undo/redo, zoom; preview skips removed parts; export to a new MP4 (the original is never changed). |
 | **Settings** | Startup, tray, notifications, theme, folders, name templates, format/quality, delay, recording defaults, audio sources, global shortcuts, restore defaults; validated before saving. |
 
 Not in this release: webcam overlay (see [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md#known-limitations)).
@@ -24,7 +25,7 @@ Prerequisites: Windows 10 1903+ / Windows 11, **.NET SDK 10.0.4xx**. Visual Stud
 
 ```powershell
 dotnet build PIXORA.slnx -c Debug
-dotnet test tests/PIXORA.Tests             # 59 tests; capture/recording tests need a real desktop
+dotnet test tests/PIXORA.Tests             # 74 tests; capture/recording/video tests need a real desktop
 dotnet run --project src/PIXORA.App
 pwsh packaging/build.ps1                   # tests + self-contained publish + artifacts/installer/PIXORA-Setup.exe
 ```
@@ -48,7 +49,7 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Status
 
-v1.0.0, first release. Built and tested on Windows 11 Pro 26200 (two monitors, 100% scaling). See
+v1.1.0 (video editing). Built and tested on Windows 11 Pro 26200 (two monitors, 100% scaling). See
 [docs/TESTING.md](docs/TESTING.md) for exactly what was verified and [docs/PROGRESS.md](docs/PROGRESS.md) for open items.
 
 ## Licence

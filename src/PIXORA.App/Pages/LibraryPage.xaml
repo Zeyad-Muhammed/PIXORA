@@ -127,6 +127,7 @@
                     <TextBlock x:Name="SelectionText" VerticalAlignment="Center" FontWeight="SemiBold" Margin="4,0" />
                     <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right">
                         <Button x:Name="ActOpen" Style="{StaticResource PxGhostButton}" Click="Open_Click"><StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE8E5;" FontSize="13" /><TextBlock Text="Open" /></StackPanel></Button>
+                        <Button x:Name="ActEditVideo" Style="{StaticResource PxGhostButton}" Click="EditVideo_Click" AutomationProperties.Name="Edit video"><StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE8B2;" FontSize="13" /><TextBlock Text="Edit video" /></StackPanel></Button>
                         <Button x:Name="ActRename" Style="{StaticResource PxGhostButton}" Click="Rename_Click"><StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE8AC;" FontSize="13" /><TextBlock Text="Rename" /></StackPanel></Button>
                         <Button x:Name="ActFav" Style="{StaticResource PxGhostButton}" Click="Favorite_Click"><StackPanel Orientation="Horizontal" Spacing="6"><FontIcon x:Name="FavGlyph" Glyph="&#xE734;" FontSize="13" /><TextBlock x:Name="FavText" Text="Favorite" /></StackPanel></Button>
                         <Button x:Name="ActCopy" Style="{StaticResource PxGhostButton}" Click="Copy_Click"><StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE8C8;" FontSize="13" /><TextBlock Text="Copy" /></StackPanel></Button>

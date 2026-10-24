@@ -24,10 +24,10 @@ events and error messages only, never captured content. Kept for 14 days.
 
 ## Known limitations
 
-- **Webcam overlay** (shown in the design) is not implemented in v1.0.0. No webcam controls are shown.
+- **Webcam overlay** (shown in the design) is not implemented yet. No webcam controls are shown.
 - **Font**: the design specifies Inter; the app uses Segoe UI Variable (bundled with Windows) to avoid shipping fonts.
 - A region selection is limited to one monitor; *Full Screen* captures all monitors together.
-- Recording is MP4 (H.264/AAC) only; no MKV, GIF or trimming/editing of videos.
+- Recording and video export are MP4 (H.264/AAC) only; no MKV or GIF. Video editing is basic: cut, trim and mute (no transitions, text, music or speed changes).
 - Audio drift over very long recordings has not been measured (recordings up to a few seconds verified).
 - Windows 10 and mixed-DPI multi-monitor setups are untested (see TESTING.md).
 - No auto-update inside PIXORA: updates come through NOVU Launcher (reinstall from the store).

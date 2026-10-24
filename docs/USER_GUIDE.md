@@ -57,6 +57,24 @@ Text **T**, Steps **N**, Highlight **H**, Blur **B**, Pixelate **P**.
 The "REC" indicator is driven by the recorder's actual state; it shows PAUSED/SAVING when appropriate.
 If the recorded window closes, the recording up to that point is saved.
 
+## Video editing (basic)
+
+Open a recording, then **Edit video (trim, cut, mute)** on its preview page (or *Edit video* in the Library action
+bar / right-click menu).
+
+- The **timeline** shows frame thumbnails across the whole recording and a time ruler. Click it to move the
+  playhead and select a part; Ctrl+Wheel or the zoom slider zooms.
+- **Split** (S) cuts the selected part in two at the playhead.
+- **Delete part** (Delete) removes the selected part; removed parts are darkened on the timeline and skipped in the
+  preview. At least one part always remains.
+- **Trim**: drag the white grips at a part's left or right edge.
+- **Mute part** (M) silences one part; **No audio** removes sound from the whole export.
+- Space plays/pauses, ←/→ move 1 s (Shift: 5 s), Home/End jump to the start/end, Ctrl+Z / Ctrl+Y undo/redo,
+  *Reset* restores the original cut.
+- **Export video** (Ctrl+S) saves the result as a **new** MP4 (default name `<recording>_edited.mp4`) with the same
+  quality as the source, adds it to the Library and opens its preview. The original recording is never modified, and
+  you are asked before leaving with edits that were not exported.
+
 ## Library
 
 Categories on the left; search, sort, grid/list at the top. Select one or many items (Ctrl/Shift-click) for the

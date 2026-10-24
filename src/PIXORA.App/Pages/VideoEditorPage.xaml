@@ -1,0 +1,117 @@
+<Page
+    x:Class="PIXORA.App.Pages.VideoEditorPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:views="using:PIXORA.App.Views"
+    Background="{ThemeResource PxBg0}" IsTabStop="True">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="56" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Top bar -->
+        <Grid Background="{ThemeResource PxBg0}" BorderBrush="{ThemeResource PxBorder}" BorderThickness="0,0,0,1" Padding="14,0,14,0" ColumnSpacing="12">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                <Button Style="{StaticResource PxGhostButton}" Click="Back_Click" ToolTipService.ToolTip="Back to preview" AutomationProperties.Name="Back"><FontIcon Glyph="&#xE72B;" FontSize="14" /></Button>
+                <FontIcon Glyph="&#xE8B2;" FontSize="16" Foreground="{StaticResource PxAccent}" />
+                <TextBlock x:Name="Title" Text="Edit video" Style="{StaticResource PxHeadlineSm}" TextTrimming="CharacterEllipsis" MaxWidth="420" VerticalAlignment="Center" />
+                <Ellipse x:Name="DirtyDot" Width="8" Height="8" Fill="{StaticResource PxAccent}" VerticalAlignment="Center" Visibility="Collapsed" ToolTipService.ToolTip="Unexported edits" />
+                <TextBlock x:Name="Summary" Style="{StaticResource PxCaption}" VerticalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <Button x:Name="UndoButton" Style="{StaticResource PxGhostButton}" Click="Undo_Click" ToolTipService.ToolTip="Undo (Ctrl+Z)" AutomationProperties.Name="Undo"><FontIcon Glyph="&#xE7A7;" FontSize="14" /></Button>
+                <Button x:Name="RedoButton" Style="{StaticResource PxGhostButton}" Click="Redo_Click" ToolTipService.ToolTip="Redo (Ctrl+Y)" AutomationProperties.Name="Redo"><FontIcon Glyph="&#xE7A6;" FontSize="14" /></Button>
+                <Button x:Name="ResetButton" Style="{StaticResource PxGhostButton}" Click="Reset_Click" ToolTipService.ToolTip="Undo all cuts">
+                    <StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE777;" FontSize="13" /><TextBlock Text="Reset" /></StackPanel>
+                </Button>
+                <Button x:Name="ExportButton" Style="{StaticResource PxPrimaryButton}" Click="Export_Click" AutomationProperties.Name="Export video" ToolTipService.ToolTip="Save the edited video as a new file (Ctrl+S)">
+                    <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xEDE1;" FontSize="14" /><TextBlock Text="Export video" /></StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Player -->
+        <Grid Grid.Row="1" Padding="20,16,20,10">
+            <Border CornerRadius="12" BorderBrush="{ThemeResource PxBorder}" BorderThickness="1" Background="Black">
+                <Grid>
+                    <MediaPlayerElement x:Name="Player" AreTransportControlsEnabled="False" Stretch="Uniform" />
+                    <Border x:Name="CutBadge" Background="#E6802631" CornerRadius="6" Padding="10,4" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12" Visibility="Collapsed">
+                        <TextBlock Text="REMOVED PART — skipped in the export" FontSize="11" FontWeight="SemiBold" Foreground="White" />
+                    </Border>
+                    <Border x:Name="MutedBadge" Background="#CC0D0D0F" CornerRadius="6" Padding="10,4" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE74F;" FontSize="12" Foreground="White" /><TextBlock Text="Muted" FontSize="11" Foreground="White" /></StackPanel>
+                    </Border>
+                    <ProgressRing x:Name="Loading" IsActive="True" Width="32" Height="32" />
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Tools -->
+        <Grid Grid.Row="2" Padding="20,0,20,8" ColumnSpacing="10">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <Button x:Name="PlayButton" Style="{StaticResource PxPrimaryButton}" Width="44" Padding="0" Click="Play_Click" ToolTipService.ToolTip="Play / pause (Space)" AutomationProperties.Name="Play">
+                    <FontIcon x:Name="PlayGlyph" Glyph="&#xE768;" FontSize="14" />
+                </Button>
+                <TextBlock x:Name="TimeText" FontFamily="{StaticResource PxMono}" FontSize="15" VerticalAlignment="Center" Text="00:00.0 / 00:00.0" />
+                <TextBlock x:Name="SourceTimeText" Style="{StaticResource PxCaption}" VerticalAlignment="Center" />
+            </StackPanel>
+            <Border Grid.Column="1" HorizontalAlignment="Center" Background="{ThemeResource PxBg1}" BorderBrush="{ThemeResource PxBorder}" BorderThickness="1" CornerRadius="10" Padding="4">
+                <StackPanel Orientation="Horizontal" Spacing="2">
+                    <Button Style="{StaticResource PxGhostButton}" Click="Split_Click" ToolTipService.ToolTip="Split at the playhead (S)" AutomationProperties.Name="Split">
+                        <StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE8C6;" FontSize="14" /><TextBlock Text="Split" /></StackPanel>
+                    </Button>
+                    <Button x:Name="DeleteButton" Style="{StaticResource PxGhostButton}" Click="Delete_Click" ToolTipService.ToolTip="Remove the selected part (Delete)" AutomationProperties.Name="Delete part">
+                        <StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE74D;" FontSize="14" /><TextBlock Text="Delete part" /></StackPanel>
+                    </Button>
+                    <Button x:Name="MuteButton" Style="{StaticResource PxGhostButton}" Click="Mute_Click" ToolTipService.ToolTip="Mute / unmute the selected part (M)" AutomationProperties.Name="Mute part">
+                        <StackPanel Orientation="Horizontal" Spacing="6"><FontIcon x:Name="MuteGlyph" Glyph="&#xE74F;" FontSize="14" /><TextBlock x:Name="MuteText" Text="Mute part" /></StackPanel>
+                    </Button>
+                    <Border Width="1" Background="{ThemeResource PxBorder}" Margin="4,6" />
+                    <ToggleButton x:Name="MuteAllToggle" Style="{StaticResource PxToolToggle}" Click="MuteAll_Click" ToolTipService.ToolTip="Remove all audio from the export">
+                        <StackPanel Orientation="Horizontal" Spacing="6"><FontIcon Glyph="&#xE198;" FontSize="14" /><TextBlock Text="No audio" /></StackPanel>
+                    </ToggleButton>
+                </StackPanel>
+            </Border>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <FontIcon Glyph="&#xE71F;" FontSize="13" Foreground="{ThemeResource PxTextSecondary}" />
+                <Slider x:Name="ZoomSlider" Width="140" Minimum="1" Maximum="12" StepFrequency="0.25" Value="1" ValueChanged="Zoom_Changed" ToolTipService.ToolTip="Timeline zoom" />
+                <FontIcon Glyph="&#xE8A3;" FontSize="13" Foreground="{ThemeResource PxTextSecondary}" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Timeline -->
+        <Border Grid.Row="3" Background="{ThemeResource PxBg1}" BorderBrush="{ThemeResource PxBorder}" BorderThickness="0,1,0,0" Padding="8,8,8,10">
+            <StackPanel Spacing="6">
+                <ScrollViewer x:Name="TimelineScroller" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" HorizontalScrollMode="Enabled"
+                              VerticalScrollMode="Disabled" ZoomMode="Disabled" Height="130" SizeChanged="TimelineScroller_SizeChanged"
+                              PointerWheelChanged="Timeline_PointerWheelChanged">
+                    <views:CursorGrid x:Name="TimelineHost" Background="Transparent" HorizontalAlignment="Left"
+                                      PointerPressed="Timeline_PointerPressed" PointerMoved="Timeline_PointerMoved"
+                                      PointerReleased="Timeline_PointerReleased" PointerCanceled="Timeline_PointerReleased">
+                        <Canvas x:Name="TimelineCanvas" Height="118" />
+                    </views:CursorGrid>
+                </ScrollViewer>
+                <TextBlock Style="{StaticResource PxCaption}" Margin="6,0,0,0" TextWrapping="Wrap" TextTrimming="None"
+                           Text="Click the timeline to move the playhead and select a part. Drag a part's edges to trim it. S splits, Delete removes the selected part, M mutes it, Space plays. The original recording is never changed: Export saves a new file." />
+            </StackPanel>
+        </Border>
+
+        <!-- Export progress -->
+        <Grid x:Name="ExportOverlay" Grid.RowSpan="4" Background="#B30D0D0F" Visibility="Collapsed">
+            <Border Style="{StaticResource PxPanel}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="380" Padding="22">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Exporting video…" Style="{StaticResource PxHeadlineSm}" />
+                    <ProgressBar x:Name="ExportProgress" Maximum="1" Foreground="{StaticResource PxAccent}" Background="{ThemeResource PxBorder}" />
+                    <TextBlock x:Name="ExportText" Style="{StaticResource PxCaption}" />
+                    <Button Content="Cancel" Style="{StaticResource PxSecondaryButton}" HorizontalAlignment="Right" Click="CancelExport_Click" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

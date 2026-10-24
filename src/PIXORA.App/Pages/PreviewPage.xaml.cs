@@ -49,6 +49,7 @@ public sealed partial class PreviewPage : Page
         FavText.Text = _item.IsFavorite ? "Remove from favorites" : "Add to favorites";
         FavGlyph.Glyph = _item.IsFavorite ? "" : "";
         MissingState.Visibility = exists ? Visibility.Collapsed : Visibility.Visible;
+        EditButton.IsEnabled = exists;
         if (exists)
         {
             var player = new MediaPlayer { Source = MediaSource.CreateFromUri(new Uri(_item.Path)), Volume = 1.0 };
@@ -58,6 +59,11 @@ public sealed partial class PreviewPage : Page
     }
 
     private void Back_Click(object sender, RoutedEventArgs e) => App.MainWindow.Navigate(PageKind.Library, LibraryCategory.Recordings);
+
+    private void EditVideo_Click(object sender, RoutedEventArgs e)
+    {
+        if (_item != null && File.Exists(_item.Path)) App.MainWindow.Navigate(PageKind.VideoEditor, _item.Id);
+    }
 
     private async void SaveAs_Click(object sender, RoutedEventArgs e)
     {

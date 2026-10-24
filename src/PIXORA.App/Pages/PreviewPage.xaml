@@ -48,7 +48,10 @@
                 <Border Style="{StaticResource PxPanel}">
                     <StackPanel Spacing="8">
                         <TextBlock Text="ACTIONS" Style="{StaticResource PxLabelCaps}" />
-                        <Button Style="{StaticResource PxPrimaryButton}" HorizontalAlignment="Stretch" Click="SaveAs_Click">
+                        <Button x:Name="EditButton" Style="{StaticResource PxPrimaryButton}" HorizontalAlignment="Stretch" Click="EditVideo_Click" AutomationProperties.Name="Edit video">
+                            <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE8B2;" FontSize="14" /><TextBlock Text="Edit video (trim, cut, mute)" /></StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource PxSecondaryButton}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Click="SaveAs_Click">
                             <StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE792;" FontSize="14" /><TextBlock Text="Save as…" /></StackPanel>
                         </Button>
                         <Button Style="{StaticResource PxSecondaryButton}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Click="Export_Click">

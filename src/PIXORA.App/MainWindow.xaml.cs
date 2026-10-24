@@ -14,7 +14,7 @@ using Windows.System;
 
 namespace PIXORA.App;
 
-public enum PageKind { Home, Screenshot, Record, Editor, Library, Preview, Settings }
+public enum PageKind { Home, Screenshot, Record, Editor, Library, Preview, VideoEditor, Settings }
 
 public sealed partial class MainWindow : Window
 {
@@ -148,8 +148,10 @@ public sealed partial class MainWindow : Window
         if (sender is Button { Tag: string tag } && Enum.TryParse<PageKind>(tag, out var kind)) Navigate(kind);
     }
 
-    public void Navigate(PageKind kind, object? parameter = null)
+    public async void Navigate(PageKind kind, object? parameter = null)
     {
+        // Pages with unsaved work (the video editor) can veto leaving.
+        if (ContentFrame.Content is IGuardedPage guarded && !await guarded.CanLeaveAsync()) return;
         var type = kind switch
         {
             PageKind.Screenshot => typeof(ScreenshotPage),
@@ -157,6 +159,7 @@ public sealed partial class MainWindow : Window
             PageKind.Editor => typeof(EditorPage),
             PageKind.Library => typeof(LibraryPage),
             PageKind.Preview => typeof(PreviewPage),
+            PageKind.VideoEditor => typeof(VideoEditorPage),
             PageKind.Settings => typeof(SettingsPage),
             _ => typeof(HomePage),
         };
@@ -177,7 +180,7 @@ public sealed partial class MainWindow : Window
 
     private void UpdateNavSelection()
     {
-        var navKind = _current == PageKind.Preview ? PageKind.Library : _current;
+        var navKind = _current is PageKind.Preview or PageKind.VideoEditor ? PageKind.Library : _current;
         var theme = Root.ActualTheme;
         foreach (var b in new[] { NavHome, NavScreenshot, NavRecord, NavEditor, NavLibrary, NavSettings })
         {
@@ -286,4 +289,10 @@ public sealed partial class MainWindow : Window
 public interface IRefreshable
 {
     void Refresh();
+}
+
+/// <summary>Pages that hold unsaved work and must confirm before the user navigates away.</summary>
+public interface IGuardedPage
+{
+    Task<bool> CanLeaveAsync();
 }

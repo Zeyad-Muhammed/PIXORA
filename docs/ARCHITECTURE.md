@@ -47,6 +47,12 @@ silence-filled). Both use one pausable clock, so pausing removes time from both 
 when loopback is silent. A `MediaStreamSource` feeds `MediaTranscoder` (H.264 + AAC, hardware when available)
 writing `<name>.mp4.part`, renamed to `.mp4` only after a clean finish.
 
+**Video editing**: `VideoTimeline` (PIXORA.Editor) is a non-destructive cut list of kept segments over the source, with
+snapshot undo. The page previews it by playing the original and seeking over removed parts. `VideoEditing.ExportAsync`
+builds a `Windows.Media.Editing.MediaComposition` with one trimmed `MediaClip` per kept segment (volume 0 when
+muted) and renders it with the source file's own encoding profile to `<name>.mp4.part`, renamed on success.
+Thumbnails come from `MediaComposition.GetThumbnailAsync`, one frame per call.
+
 **Library**: `LibraryStore` (SQLite, WAL) keyed by full path. `ScanAsync` indexes the configured folders, flags
 entries whose file vanished as *missing* (never deletes them), and clears the flag when files return. Trash is a
 flag; permanent delete sends files to the Recycle Bin via `SHFileOperation(FOF_ALLOWUNDO)`.

@@ -124,6 +124,7 @@ public sealed partial class LibraryPage : Page
         ActionBar.Visibility = sel.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         SelectionText.Text = sel.Count == 1 ? sel[0].Name : $"{sel.Count} selected";
         ActOpen.Visibility = sel.Count == 1 && !trash ? Visibility.Visible : Visibility.Collapsed;
+        ActEditVideo.Visibility = sel.Count == 1 && !trash && sel[0].Kind == MediaKind.Recording && !sel[0].IsMissing ? Visibility.Visible : Visibility.Collapsed;
         ActRename.Visibility = sel.Count == 1 && !trash ? Visibility.Visible : Visibility.Collapsed;
         ActReveal.Visibility = sel.Count == 1 ? Visibility.Visible : Visibility.Collapsed;
         ActFav.Visibility = trash ? Visibility.Collapsed : Visibility.Visible;
@@ -163,6 +164,7 @@ public sealed partial class LibraryPage : Page
         else
         {
             Item("Open", "", Open_Click, sel.Count == 1);
+            if (sel.Count == 1 && sel[0].Kind == MediaKind.Recording && !sel[0].IsMissing) Item("Edit video", "", EditVideo_Click);
             Item("Rename", "", Rename_Click, sel.Count == 1);
             Item(sel.All(s => s.IsFavorite) ? "Unfavorite" : "Favorite", "", Favorite_Click);
             Item("Copy", "", Copy_Click);
@@ -185,6 +187,12 @@ public sealed partial class LibraryPage : Page
         }
         else if (e.Key == VirtualKey.Enter && Selected().Count == 1) { Open_Click(sender, e); e.Handled = true; }
         else if (e.Key == VirtualKey.F2 && Selected().Count == 1) { Rename_Click(sender, e); e.Handled = true; }
+    }
+
+    private void EditVideo_Click(object sender, RoutedEventArgs e)
+    {
+        var s = Selected();
+        if (s.Count == 1 && s[0].Kind == MediaKind.Recording) App.MainWindow.Navigate(PageKind.VideoEditor, s[0].Id);
     }
 
     private async void Open_Click(object sender, RoutedEventArgs e)
